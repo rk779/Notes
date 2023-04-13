@@ -1,4 +1,4 @@
-package in.rk585.notes
+package `in`.rk585.notes
 
 interface Platform {
     val name: String

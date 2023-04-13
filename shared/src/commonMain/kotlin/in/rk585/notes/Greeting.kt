@@ -1,4 +1,4 @@
-package in.rk585.notes
+package `in`.rk585.notes
 
 class Greeting {
     private val platform: Platform = getPlatform()

@@ -1,4 +1,4 @@
-package in.rk585.notes
+package `in`.rk585.notes
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"

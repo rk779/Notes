@@ -1,4 +1,4 @@
-package in.rk585.notes.android
+package `in`.rk585.notes.android
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
