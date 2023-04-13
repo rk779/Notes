@@ -1,17 +1,11 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
-    id("com.android.library")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.native)
+    alias(libs.plugins.android.library)
 }
 
 kotlin {
-    android {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
+    android()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -26,7 +20,7 @@ kotlin {
             baseName = "shared"
         }
     }
-    
+
     sourceSets {
         val commonMain by getting
         val commonTest by getting {
@@ -59,9 +53,4 @@ kotlin {
 
 android {
     namespace = "in.rk585.notes"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
-    }
 }
