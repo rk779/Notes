@@ -15,6 +15,9 @@ kotlin {
         named("jvmMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation(compose.material3)
+                implementation(projects.ui.design)
+                implementation(projects.ui.authentication.login)
             }
         }
     }

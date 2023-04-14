@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.android)
 }
 
@@ -36,5 +37,9 @@ dependencies {
     implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.activity:activity-compose:1.6.1")
 
+    implementation(compose.material3)
+
     implementation(projects.shared)
+    implementation(projects.ui.design)
+    implementation(projects.ui.authentication.login)
 }

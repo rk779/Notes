@@ -19,6 +19,8 @@ dependencyResolutionManagement {
 include(":androidApp")
 include(":desktopApp")
 include(":shared")
+include(":ui:authentication:login")
+include(":ui:design")
 
 rootProject.name = "Notes"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
