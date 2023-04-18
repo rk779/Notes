@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 
 include(":androidApp")
 include(":desktopApp")
+include(":iOS-ComposeApp")
 include(":shared")
 include(":ui:authentication:login")
 include(":ui:design")
