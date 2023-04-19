@@ -29,7 +29,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
 
-                implementation(projects.ui.authentication.login)
+                implementation(projects.ui.navigation)
             }
         }
         val iosX64Main by getting

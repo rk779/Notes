@@ -17,7 +17,7 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(compose.material3)
                 implementation(projects.ui.design)
-                implementation(projects.ui.authentication.login)
+                implementation(projects.ui.navigation)
             }
         }
     }

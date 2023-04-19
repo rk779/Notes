@@ -41,5 +41,5 @@ dependencies {
 
     implementation(projects.shared)
     implementation(projects.ui.design)
-    implementation(projects.ui.authentication.login)
+    implementation(projects.ui.navigation)
 }

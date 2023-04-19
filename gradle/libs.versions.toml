@@ -2,6 +2,7 @@
 androidGradlePlugin = "8.1.0-alpha11"
 composeCompiler = "1.4.5"
 kotlin = "1.8.20"
+voyager = "1.0.0-rc04"
 
 # Application sdk version
 compileSdk = "33"
@@ -17,5 +18,6 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-native = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 
 [libraries]
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 
 [bundles]

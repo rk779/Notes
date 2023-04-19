@@ -25,6 +25,7 @@ include(":core:domain")
 include(":shared")
 include(":ui:authentication:login")
 include(":ui:design")
+include(":ui:navigation")
 
 rootProject.name = "Notes"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

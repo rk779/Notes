@@ -2,6 +2,7 @@ package `in`.rk585.notes.ui.authentication.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedTextField
@@ -13,10 +14,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+
+object LoginScreen : Screen {
+
+    @Composable
+    override fun Content() {
+        Login(Modifier.fillMaxSize())
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(
+private fun Login(
     modifier: Modifier = Modifier
 ) {
     val (email, setEmail) = remember { mutableStateOf(TextFieldValue()) }
