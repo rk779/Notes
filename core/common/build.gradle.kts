@@ -14,12 +14,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.material3)
-                implementation(compose.ui)
+                implementation(compose.runtime)
 
-                implementation(libs.voyager.navigator)
-                implementation(projects.core.common)
-                implementation(projects.ui.navigation)
+                implementation(libs.supabase.goTrue)
+
+                implementation(libs.voyager.core)
+
+                implementation(projects.core.base)
+                implementation(projects.core.network)
             }
         }
         val androidMain by getting
@@ -37,5 +39,5 @@ kotlin {
 }
 
 android {
-    namespace = "in.rk585.notes.ui.authentication.login"
+    namespace = "in.rk585.notes.core.common"
 }

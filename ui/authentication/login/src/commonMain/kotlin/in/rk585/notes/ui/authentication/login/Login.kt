@@ -15,18 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import `in`.rk585.notes.core.common.authentication.LoginViewModel
+import `in`.rk585.notes.core.common.viewModel
 
 object LoginScreen : Screen {
 
     @Composable
     override fun Content() {
-        Login(Modifier.fillMaxSize())
+        val viewModel = viewModel { loginViewModel() }
+
+        Login(
+            viewModel = viewModel,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Login(
+    viewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ) {
     val (email, setEmail) = remember { mutableStateOf(TextFieldValue()) }
@@ -47,7 +55,7 @@ private fun Login(
             onValueChange = setPassword,
             label = { Text("Password") }
         )
-        FilledTonalButton(onClick = { }) {
+        FilledTonalButton(onClick = { viewModel.login(email.text, password.text) }) {
             Text("Login with Email")
         }
     }

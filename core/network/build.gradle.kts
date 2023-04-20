@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.multiplatform)
 }
 
@@ -14,15 +13,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.material3)
-                implementation(compose.ui)
+                api(libs.supabase.goTrue)
 
-                implementation(libs.voyager.navigator)
-                implementation(projects.core.common)
-                implementation(projects.ui.navigation)
+                implementation(projects.core.base)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -31,11 +31,20 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
     }
 }
 
 android {
-    namespace = "in.rk585.notes.ui.authentication.login"
+    namespace = "in.rk585.notes.core.network"
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
