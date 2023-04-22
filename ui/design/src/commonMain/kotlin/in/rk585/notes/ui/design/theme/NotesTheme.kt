@@ -1,20 +1,22 @@
 package `in`.rk585.notes.ui.design.theme
 
-import androidx.compose.material3.ColorScheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 @Composable
 fun NotesTheme(
-    colorScheme: ColorScheme = MaterialTheme.colorScheme,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme(),
         shapes = shapes,
         typography = typography,
         content = content
