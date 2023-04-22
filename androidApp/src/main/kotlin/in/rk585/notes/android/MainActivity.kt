@@ -3,8 +3,10 @@ package `in`.rk585.notes.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.CompositionLocalProvider
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import `in`.rk585.notes.android.inject.MainActivityComponent
 import `in`.rk585.notes.android.inject.create
 import `in`.rk585.notes.core.base.extensions.unsafeLazy
@@ -13,6 +15,7 @@ import `in`.rk585.notes.core.common.ViewModelComponent
 import `in`.rk585.notes.ui.authentication.login.LoginScreen
 import `in`.rk585.notes.ui.design.theme.NotesTheme
 
+@OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
 
     private lateinit var component: MainActivityComponent
@@ -24,11 +27,11 @@ class MainActivity : ComponentActivity() {
         component = MainActivityComponent::class.create(this)
 
         setContent {
-            CompositionLocalProvider(
-                LocalViewModel provides viewModels
-            ) {
+            CompositionLocalProvider(LocalViewModel provides viewModels) {
                 NotesTheme {
-                    Navigator(LoginScreen)
+                    Navigator(LoginScreen) {
+                        SlideTransition(it)
+                    }
                 }
             }
         }

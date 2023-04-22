@@ -1,8 +1,10 @@
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.awaitApplication
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import `in`.rk585.notes.core.base.extensions.unsafeLazy
 import `in`.rk585.notes.core.common.LocalViewModel
 import `in`.rk585.notes.inject.ApplicationComponent
@@ -11,6 +13,7 @@ import `in`.rk585.notes.ui.authentication.login.LoginScreen
 import `in`.rk585.notes.ui.authentication.navigation.authScreenModule
 import `in`.rk585.notes.ui.design.theme.NotesTheme
 
+@OptIn(ExperimentalAnimationApi::class)
 suspend fun main() {
 
     ScreenRegistry {
@@ -24,11 +27,11 @@ suspend fun main() {
 
     awaitApplication {
         Window(onCloseRequest = ::exitApplication, title = "Notes") {
-            CompositionLocalProvider(
-                LocalViewModel provides viewModels
-            ) {
+            CompositionLocalProvider(LocalViewModel provides viewModels) {
                 NotesTheme {
-                    Navigator(LoginScreen)
+                    Navigator(LoginScreen) {
+                        SlideTransition(it)
+                    }
                 }
             }
         }

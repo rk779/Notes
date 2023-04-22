@@ -43,5 +43,6 @@ supabase-goTrue = { module = "io.github.jan-tennert.supabase:gotrue-kt", version
 # Navigation
 voyager-core = { module = "cafe.adriel.voyager:voyager-core", version.ref = "voyager" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 
 [bundles]

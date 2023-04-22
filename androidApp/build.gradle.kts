@@ -43,7 +43,9 @@ dependencies {
     // Dependency Injection
     ksp(libs.kotlinInject.compiler)
 
+    // Navigation
     implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
 
     implementation(projects.shared)
     implementation(projects.core.base)

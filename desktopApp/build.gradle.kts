@@ -19,6 +19,7 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.voyager.navigator)
+                implementation(libs.voyager.transitions)
 
                 implementation(projects.core.base)
                 implementation(projects.core.common)
