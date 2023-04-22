@@ -16,8 +16,12 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(compose.material3)
+
+                implementation(libs.voyager.navigator)
+
                 implementation(projects.ui.design)
-                implementation(projects.ui.navigation)
+                implementation(projects.ui.authentication.login)
+                implementation(projects.ui.authentication.navigation)
             }
         }
     }

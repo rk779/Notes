@@ -18,6 +18,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-native = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 
 [libraries]
+voyager-core = { module = "cafe.adriel.voyager:voyager-core", version.ref = "voyager" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 
 [bundles]

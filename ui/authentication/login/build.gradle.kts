@@ -18,6 +18,7 @@ kotlin {
                 implementation(compose.ui)
 
                 implementation(libs.voyager.navigator)
+                implementation(projects.ui.navigation)
             }
         }
         val androidMain by getting
