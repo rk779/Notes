@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.1.0-alpha11"
+androidGradlePlugin = "8.1.0-beta01"
 composeCompiler = "1.4.5"
 kotlin = "1.8.20"
 voyager = "1.0.0-rc04"
