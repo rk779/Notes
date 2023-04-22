@@ -14,10 +14,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(compose.materialIconsExtended)
                 implementation(compose.material3)
                 implementation(compose.ui)
 
                 implementation(libs.voyager.navigator)
+
+                implementation(projects.core.base)
             }
         }
         val androidMain by getting

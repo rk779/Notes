@@ -21,12 +21,12 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -54,9 +55,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import `in`.rk585.notes.core.common.authentication.LoginViewModel
 import `in`.rk585.notes.core.common.viewModel
+import `in`.rk585.notes.ui.navigation.AuthScreen
 
 object LoginScreen : Screen {
 
@@ -73,6 +78,9 @@ object LoginScreen : Screen {
 internal fun LoginScreen(
     viewModel: LoginViewModel
 ) {
+    val navigator = LocalNavigator.currentOrThrow
+    val registerScreen = rememberScreen(AuthScreen.Register)
+
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -86,7 +94,7 @@ internal fun LoginScreen(
         ) {
             LoginScreenContent(
                 modifier = Modifier.fillMaxSize(),
-                onClickCreateNewAccount = { /**TODO**/ },
+                onClickCreateNewAccount = { navigator.push(registerScreen) },
                 onClickLogin = viewModel::login,
                 onClickForgetPassword = { /**TODO**/ }
             )
@@ -149,6 +157,7 @@ internal fun LoginScreenContent(
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChanged,
+            modifier = Modifier.focusRequester(passwordFocusRequester),
             placeholder = { Text("Password") },
             trailingIcon = {
                 IconButton(
@@ -212,9 +221,7 @@ internal fun LoginScreenContent(
             color = LocalContentColor.current.copy(0.9f),
             style = MaterialTheme.typography.labelLarge
         )
-        Spacer(modifier = Modifier.height(Dp.Hairline))
-        Text("Don't have an account?")
-        OutlinedButton(
+        ElevatedButton(
             onClick = onClickCreateNewAccount,
             modifier = Modifier.defaultMinSize(
                 TextFieldDefaults.MinWidth,
