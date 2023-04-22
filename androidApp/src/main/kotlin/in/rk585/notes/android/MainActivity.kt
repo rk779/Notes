@@ -3,7 +3,9 @@ package `in`.rk585.notes.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import `in`.rk585.notes.ui.navigation.Application
+import cafe.adriel.voyager.navigator.Navigator
+import `in`.rk585.notes.ui.authentication.login.LoginScreen
+import `in`.rk585.notes.ui.design.theme.NotesTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -11,7 +13,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Application()
+            NotesTheme {
+                Navigator(LoginScreen)
+            }
         }
     }
 }

@@ -1,19 +1,23 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.multiplatform)
 }
 
 kotlin {
     android()
-    jvm()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    jvm()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.voyager.core)
+                implementation(compose.material3)
+                implementation(compose.ui)
+
+                implementation(libs.voyager.navigator)
             }
         }
         val androidMain by getting
@@ -31,5 +35,5 @@ kotlin {
 }
 
 android {
-    namespace = "in.rk585.notes.ui.navigation"
+    namespace = "in.rk585.notes.ui.authentication.signup"
 }

@@ -5,15 +5,19 @@ plugins {
 
 kotlin {
     android()
-    jvm()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    jvm()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(libs.voyager.core)
+
+                implementation(projects.ui.authentication.login)
+                implementation(projects.ui.authentication.signup)
+                implementation(projects.ui.navigation)
             }
         }
         val androidMain by getting
@@ -31,5 +35,5 @@ kotlin {
 }
 
 android {
-    namespace = "in.rk585.notes.ui.navigation"
+    namespace = "in.rk585.notes.ui.authentication.navigation"
 }

@@ -39,7 +39,10 @@ dependencies {
 
     implementation(compose.material3)
 
+    implementation(libs.voyager.navigator)
+
     implementation(projects.shared)
+    implementation(projects.ui.authentication.login)
+    implementation(projects.ui.authentication.navigation)
     implementation(projects.ui.design)
-    implementation(projects.ui.navigation)
 }
