@@ -1,6 +1,9 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.buildconfig)
 }
 
 kotlin {
@@ -47,4 +50,18 @@ kotlin {
 android {
     namespace = "in.rk585.notes.core.network"
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+}
+
+buildConfig {
+    packageName.set("in.rk585.notes")
+
+    buildConfigField("String", "API_URL", "\"${propOrDef("SUPABASE_API_URL", "")}\"")
+    buildConfigField("String", "API_KEY", "\"${propOrDef("SUPABASE_API_KEY", "")}\"")
+}
+
+fun <T : Any> propOrDef(propertyName: String, defaultValue: T): T {
+    @Suppress("UNCHECKED_CAST")
+    val propertyValue = project.properties[propertyName] as T?
+    val localPropertyValue = gradleLocalProperties(rootDir).getProperty(propertyName) as T?
+    return propertyValue ?: localPropertyValue ?: defaultValue
 }
