@@ -16,11 +16,11 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
 
-                implementation(libs.supabase.goTrue)
-
                 implementation(libs.voyager.core)
 
                 implementation(projects.core.base)
+                implementation(projects.core.data)
+                implementation(projects.core.domain)
                 implementation(projects.core.network)
             }
         }

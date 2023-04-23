@@ -1,5 +1,6 @@
 package `in`.rk585.notes.ui.authentication.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -34,6 +36,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,7 +64,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import `in`.rk585.notes.core.common.authentication.LoginViewModel
+import `in`.rk585.notes.core.common.authentication.LoginViewState
 import `in`.rk585.notes.core.common.viewModel
+import `in`.rk585.notes.ui.design.components.AutoSizedCircularProgressIndicator
 import `in`.rk585.notes.ui.navigation.AuthScreen
 
 object LoginScreen : Screen {
@@ -80,8 +86,16 @@ internal fun LoginScreen(
 ) {
     val navigator = LocalNavigator.currentOrThrow
     val registerScreen = rememberScreen(AuthScreen.Register)
-
+    val viewState by viewModel.state.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    viewState.uiMessage?.let { message ->
+        LaunchedEffect(message) {
+            snackBarHostState.showSnackbar(message.message)
+            // Notify the view model that the message has been dismissed
+            viewModel.clearMessage(message.id)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -93,9 +107,10 @@ internal fun LoginScreen(
             contentAlignment = Alignment.Center
         ) {
             LoginScreenContent(
+                viewState = viewState,
                 modifier = Modifier.fillMaxSize(),
                 onClickCreateNewAccount = { navigator.push(registerScreen) },
-                onClickLogin = viewModel::login,
+                onClickLogin = viewModel::loginWithEmail,
                 onClickForgetPassword = { /**TODO**/ }
             )
         }
@@ -105,6 +120,7 @@ internal fun LoginScreen(
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreenContent(
+    viewState: LoginViewState,
     modifier: Modifier = Modifier,
     onClickLogin: (email: String, password: String) -> Unit,
     onClickForgetPassword: () -> Unit,
@@ -202,13 +218,20 @@ internal fun LoginScreenContent(
                 TextFieldDefaults.MinWidth,
                 ButtonDefaults.MinHeight
             ),
-            enabled = isInputValid,
+            enabled = isInputValid && !viewState.loading,
             shape = RoundedCornerShape(8.dp)
         ) {
             Text(
                 text = "Sign in",
                 fontWeight = FontWeight.SemiBold
             )
+            AnimatedVisibility(viewState.loading) {
+                AutoSizedCircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .size(24.dp)
+                )
+            }
         }
         Text(
             text = "Forgot your password?",

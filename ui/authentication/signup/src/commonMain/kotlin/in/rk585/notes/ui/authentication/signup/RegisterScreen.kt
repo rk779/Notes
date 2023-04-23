@@ -57,18 +57,25 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import `in`.rk585.notes.core.base.utils.EMAIL_REGEX
+import `in`.rk585.notes.core.common.authentication.RegisterViewModel
+import `in`.rk585.notes.core.common.viewModel
+import `in`.rk585.notes.core.data.model.RegisterWithEmail
 
 object RegisterScreen : Screen {
 
     @Composable
     override fun Content() {
-        RegisterScreen()
+        val viewModel = viewModel { registerViewModel() }
+
+        RegisterScreen(viewModel)
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RegisterScreen() {
+internal fun RegisterScreen(
+    viewModel: RegisterViewModel
+) {
     val navigator = LocalNavigator.currentOrThrow
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -83,6 +90,7 @@ internal fun RegisterScreen() {
         ) {
             RegisterScreenContent(
                 modifier = Modifier.fillMaxSize(),
+                onClickRegister = viewModel::registerWithEmail,
                 onClickSignIn = navigator::pop
             )
         }
@@ -93,6 +101,7 @@ internal fun RegisterScreen() {
 @Composable
 internal fun RegisterScreenContent(
     modifier: Modifier = Modifier,
+    onClickRegister: (RegisterWithEmail) -> Unit,
     onClickSignIn: () -> Unit
 ) {
     val (name, onNameChange) = remember { mutableStateOf(TextFieldValue()) }
@@ -229,6 +238,7 @@ internal fun RegisterScreenContent(
                 onDone = {
                     if (!isInputValid) return@KeyboardActions
                     keyboardController?.hide()
+                    onClickRegister(RegisterWithEmail(email.text, name.text, password.text))
                 }
             ),
             singleLine = true,
@@ -241,6 +251,7 @@ internal fun RegisterScreenContent(
             onClick = {
                 if (!isInputValid) return@Button
                 keyboardController?.hide()
+                onClickRegister(RegisterWithEmail(email.text, name.text, password.text))
             },
             modifier = Modifier.defaultMinSize(
                 TextFieldDefaults.MinWidth,

@@ -4,6 +4,7 @@ import `in`.rk585.notes.BuildConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.gotrue
 import me.tatarka.inject.annotations.Provides
 
 interface NetworkComponent {
@@ -13,5 +14,10 @@ interface NetworkComponent {
         return createSupabaseClient(BuildConfig.API_URL, BuildConfig.API_KEY) {
             install(GoTrue)
         }
+    }
+
+    @Provides
+    fun provideGoTrue(client: SupabaseClient): GoTrue {
+        return client.gotrue
     }
 }

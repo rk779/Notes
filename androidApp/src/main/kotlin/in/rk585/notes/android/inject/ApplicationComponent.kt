@@ -5,6 +5,7 @@ import android.content.Context
 import `in`.rk585.notes.android.NotesApplication
 import `in`.rk585.notes.core.base.inject.ApplicationScope
 import `in`.rk585.notes.core.common.ViewModelComponent
+import `in`.rk585.notes.core.data.repository.user.UserBinds
 import `in`.rk585.notes.core.network.inject.NetworkComponent
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -13,7 +14,7 @@ import me.tatarka.inject.annotations.Provides
 @Component
 abstract class ApplicationComponent(
     @get:Provides val application: Application
-) : NetworkComponent, ViewModelComponent {
+) : NetworkComponent, ViewModelComponent, UserBinds {
 
     val bind: ViewModelComponent
         @Provides get() = this

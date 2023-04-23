@@ -21,6 +21,8 @@ kotlin {
                 implementation(libs.voyager.navigator)
 
                 implementation(projects.core.base)
+                implementation(projects.core.common)
+                implementation(projects.core.data)
             }
         }
         val androidMain by getting

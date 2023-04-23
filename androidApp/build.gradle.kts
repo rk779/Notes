@@ -50,6 +50,8 @@ dependencies {
     implementation(projects.shared)
     implementation(projects.core.base)
     implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
     implementation(projects.core.network)
     implementation(projects.ui.authentication.login)
     implementation(projects.ui.authentication.navigation)

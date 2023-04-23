@@ -16,7 +16,11 @@ kotlin {
                 // Dependency injection
                 api(libs.kotlinInject.runtime)
 
+                // Kotlinx Libraries
+                implementation(libs.kotlinx.atomicfu)
                 api(libs.kotlinx.coroutines.core)
+                api(libs.kotlinx.datetime)
+                api(libs.kotlinx.serialization.json)
             }
         }
         val androidMain by getting {

@@ -1,32 +1,58 @@
 package `in`.rk585.notes.core.common.authentication
 
+import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
-import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.gotrue.gotrue
-import io.github.jan.supabase.gotrue.providers.builtin.Email
+import `in`.rk585.notes.core.base.collectStatus
+import `in`.rk585.notes.core.base.utils.ObservableLoadingCounter
+import `in`.rk585.notes.core.base.utils.UiMessage
+import `in`.rk585.notes.core.base.utils.UiMessageManager
+import `in`.rk585.notes.core.domain.interactor.UserEmailLogin
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 
 @Inject
 class LoginViewModel(
-    private val client: SupabaseClient
+    private val userEmailLogin: UserEmailLogin
 ) : ScreenModel {
 
-    init {
+    private val loadingState = ObservableLoadingCounter()
+    private val uiMessageManager = UiMessageManager()
+
+    val state: StateFlow<LoginViewState> = combine(
+        loadingState.observable,
+        uiMessageManager.message,
+        ::LoginViewState
+    ).stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = LoginViewState.Empty
+    )
+
+    fun loginWithEmail(email: String, password: String) {
         coroutineScope.launch {
-            println(client.gotrue.currentSessionOrNull())
+            userEmailLogin.invoke(UserEmailLogin.Params(email, password))
+                .collectStatus(loadingState, uiMessageManager)
         }
     }
 
-    fun login(email: String, password: String) {
-        println("Trying ro login $email:$password")
+    fun clearMessage(id: Long) {
         coroutineScope.launch {
-            client.gotrue.loginWith(Email) {
-                this.email = email
-                this.password = password
-            }
-            println(client.gotrue.currentAccessTokenOrNull())
+            uiMessageManager.clearMessage(id)
         }
+    }
+}
+
+@Immutable
+data class LoginViewState(
+    val loading: Boolean = false,
+    val uiMessage: UiMessage? = null
+) {
+    companion object {
+        val Empty = LoginViewState()
     }
 }

@@ -21,6 +21,7 @@ kotlin {
                 implementation(libs.voyager.navigator)
                 implementation(projects.core.base)
                 implementation(projects.core.common)
+                implementation(projects.ui.design)
                 implementation(projects.ui.navigation)
             }
         }

@@ -7,9 +7,11 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import `in`.rk585.notes.core.common.authentication.LoginViewModel
+import `in`.rk585.notes.core.common.authentication.RegisterViewModel
 
 interface ViewModelComponent {
     val loginViewModel: () -> LoginViewModel
+    val registerViewModel: () -> RegisterViewModel
     val splashViewModel: () -> SplashViewModel
 }
 
