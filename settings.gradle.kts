@@ -30,6 +30,7 @@ include(":ui:authentication:navigation")
 include(":ui:authentication:signup")
 include(":ui:design")
 include(":ui:navigation")
+include(":ui:splash")
 
 rootProject.name = "Notes"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

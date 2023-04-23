@@ -9,9 +9,9 @@ import `in`.rk585.notes.core.base.extensions.unsafeLazy
 import `in`.rk585.notes.core.common.LocalViewModel
 import `in`.rk585.notes.inject.ApplicationComponent
 import `in`.rk585.notes.inject.create
-import `in`.rk585.notes.ui.authentication.login.LoginScreen
 import `in`.rk585.notes.ui.authentication.navigation.authScreenModule
 import `in`.rk585.notes.ui.design.theme.NotesTheme
+import `in`.rk585.notes.ui.splash.SplashScreen
 
 @OptIn(ExperimentalAnimationApi::class)
 suspend fun main() {
@@ -29,7 +29,7 @@ suspend fun main() {
         Window(onCloseRequest = ::exitApplication, title = "Notes") {
             CompositionLocalProvider(LocalViewModel provides viewModels) {
                 NotesTheme {
-                    Navigator(LoginScreen) {
+                    Navigator(SplashScreen) {
                         SlideTransition(it)
                     }
                 }

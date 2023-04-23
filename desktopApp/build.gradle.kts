@@ -24,9 +24,10 @@ kotlin {
                 implementation(projects.core.base)
                 implementation(projects.core.common)
                 implementation(projects.core.network)
-                implementation(projects.ui.design)
                 implementation(projects.ui.authentication.login)
                 implementation(projects.ui.authentication.navigation)
+                implementation(projects.ui.design)
+                implementation(projects.ui.splash)
             }
         }
     }

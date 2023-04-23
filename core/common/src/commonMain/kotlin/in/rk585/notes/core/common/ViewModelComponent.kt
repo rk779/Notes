@@ -10,6 +10,7 @@ import `in`.rk585.notes.core.common.authentication.LoginViewModel
 
 interface ViewModelComponent {
     val loginViewModel: () -> LoginViewModel
+    val splashViewModel: () -> SplashViewModel
 }
 
 val LocalViewModel = compositionLocalOf<ViewModelComponent> {
