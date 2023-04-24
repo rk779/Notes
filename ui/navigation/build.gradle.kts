@@ -1,18 +1,21 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.multiplatform)
 }
 
 kotlin {
     android()
-    jvm()
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    jvm()
 
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(compose.runtime)
+                implementation(libs.compose.runtime.saveable)
                 implementation(libs.voyager.core)
             }
         }

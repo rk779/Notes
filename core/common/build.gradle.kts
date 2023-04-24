@@ -15,6 +15,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
+                implementation(libs.compose.runtime.saveable)
 
                 implementation(libs.voyager.core)
 

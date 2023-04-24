@@ -2,6 +2,7 @@
 androidGradlePlugin = "8.1.0-beta01"
 composeCompiler = "1.4.5"
 coroutines = "1.7.0-RC"
+jetbrainsCompose = "1.4.0"
 kotlin = "1.8.20"
 kotlinInject = "0.6.1"
 ktor = "2.3.0"
@@ -17,7 +18,7 @@ minSdk = "23"
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version = "3.1.0" }
-compose-multiplatform = { id = "org.jetbrains.compose", version = "1.4.0" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-native = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
@@ -25,6 +26,9 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version = "1.8.20-1.0.11" }
 
 [libraries]
+# Jetbrains Compose Libraries
+compose-runtime-saveable = { module = "org.jetbrains.compose.runtime:runtime-saveable", version.ref = "jetbrainsCompose" }
+
 # Dependency Injection
 kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
 kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
