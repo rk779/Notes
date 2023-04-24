@@ -59,7 +59,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import `in`.rk585.notes.core.base.utils.EMAIL_REGEX
 import `in`.rk585.notes.core.common.authentication.RegisterViewModel
 import `in`.rk585.notes.core.common.viewModel
-import `in`.rk585.notes.core.data.model.RegisterWithEmail
 
 object RegisterScreen : Screen {
 
@@ -101,27 +100,30 @@ internal fun RegisterScreen(
 @Composable
 internal fun RegisterScreenContent(
     modifier: Modifier = Modifier,
-    onClickRegister: (RegisterWithEmail) -> Unit,
+    onClickRegister: (Pair<String, String>) -> Unit,
     onClickSignIn: () -> Unit
 ) {
-    val (name, onNameChange) = remember { mutableStateOf(TextFieldValue()) }
-    val (username, onUsernameChange) = remember { mutableStateOf(TextFieldValue()) }
     val (email, onEmailChanged) = remember { mutableStateOf(TextFieldValue()) }
     val (password, onPasswordChange) = remember { mutableStateOf(TextFieldValue()) }
-    val isInputValid by remember(name.text, username.text, email.text, password.text) {
+    val (confirmPassword, onConfirmPasswordChange) = remember { mutableStateOf(TextFieldValue()) }
+    val passwordMatches by remember(password.text, confirmPassword.text) {
         derivedStateOf {
-            name.text.isNotEmpty() && username.text.isNotEmpty()
-                    && username.text.length >= 5 && email.text.isNotEmpty()
-                    && email.text.matches(EMAIL_REGEX) && password.text.isNotEmpty()
+            password.text == confirmPassword.text
+        }
+    }
+    val isInputValid by remember(email.text, password.text) {
+        derivedStateOf {
+            email.text.isNotEmpty() && email.text.matches(EMAIL_REGEX)
+                    && password.text.isNotEmpty() && confirmPassword.text.isNotEmpty()
+                    && passwordMatches
         }
     }
     var passwordVisibility by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val (
-        emailFocusRequester,
-        usernameFocusRequester,
-        passwordFocusRequester
+        passwordFocusRequester,
+        confirmPasswordFocusRequester
     ) = remember { FocusRequester.createRefs() }
 
     Column(
@@ -139,28 +141,8 @@ internal fun RegisterScreenContent(
         )
         Spacer(modifier = Modifier.height(Dp.Hairline))
         OutlinedTextField(
-            value = name,
-            onValueChange = onNameChange,
-            placeholder = { Text("Name") },
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { emailFocusRequester.requestFocus() }
-            ),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.45f)
-            )
-        )
-        OutlinedTextField(
             value = email,
             onValueChange = onEmailChanged,
-            modifier = Modifier.focusRequester(emailFocusRequester),
             placeholder = { Text("Email address") },
             supportingText = {
                 AnimatedVisibility(email.text.isNotEmpty() && !email.text.matches(EMAIL_REGEX)) {
@@ -172,32 +154,6 @@ internal fun RegisterScreenContent(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
                 keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { usernameFocusRequester.requestFocus() }
-            ),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.45f)
-            )
-        )
-        OutlinedTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            modifier = Modifier.focusRequester(usernameFocusRequester),
-            placeholder = { Text("Username") },
-            supportingText = {
-                AnimatedVisibility(username.text.isNotEmpty() && username.text.length <= 5) {
-                    Text("Username should have a minimum of 5 characters")
-                }
-            },
-            isError = (username.text.isNotEmpty() && username.text.length <= 5),
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(
@@ -214,10 +170,31 @@ internal fun RegisterScreenContent(
             onValueChange = onPasswordChange,
             modifier = Modifier.focusRequester(passwordFocusRequester),
             placeholder = { Text("Password") },
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.None,
+                autoCorrect = false,
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { confirmPasswordFocusRequester.requestFocus() }
+            ),
+            singleLine = true,
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.45f)
+            )
+        )
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = onConfirmPasswordChange,
+            modifier = Modifier.focusRequester(confirmPasswordFocusRequester),
+            placeholder = { Text("Confirm Password") },
             trailingIcon = {
                 IconButton(
                     onClick = { passwordVisibility = !passwordVisibility },
-                    enabled = password.text.isNotEmpty()
+                    enabled = password.text.isNotEmpty() || confirmPassword.text.isNotEmpty()
                 ) {
                     Crossfade(targetState = passwordVisibility) { isVisible ->
                         Icon(
@@ -225,6 +202,11 @@ internal fun RegisterScreenContent(
                             contentDescription = null
                         )
                     }
+                }
+            },
+            supportingText = {
+                AnimatedVisibility(confirmPassword.text.isNotEmpty() && !passwordMatches) {
+                    Text("Passwords doesn't match")
                 }
             },
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
@@ -238,7 +220,7 @@ internal fun RegisterScreenContent(
                 onDone = {
                     if (!isInputValid) return@KeyboardActions
                     keyboardController?.hide()
-                    onClickRegister(RegisterWithEmail(email.text, name.text, password.text))
+                    onClickRegister(Pair(email.text, password.text))
                 }
             ),
             singleLine = true,
@@ -251,14 +233,14 @@ internal fun RegisterScreenContent(
             onClick = {
                 if (!isInputValid) return@Button
                 keyboardController?.hide()
-                onClickRegister(RegisterWithEmail(email.text, name.text, password.text))
+                onClickRegister(Pair(email.text, password.text))
             },
+            enabled = isInputValid,
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier.defaultMinSize(
                 TextFieldDefaults.MinWidth,
                 ButtonDefaults.MinHeight
-            ),
-            enabled = isInputValid,
-            shape = RoundedCornerShape(8.dp)
+            )
         ) {
             Text(
                 text = "Register",
@@ -267,11 +249,11 @@ internal fun RegisterScreenContent(
         }
         ElevatedButton(
             onClick = onClickSignIn,
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier.defaultMinSize(
-                TextFieldDefaults.MinWidth,
-                ButtonDefaults.MinHeight
-            ),
-            shape = RoundedCornerShape(8.dp)
+                minWidth = TextFieldDefaults.MinWidth,
+                minHeight = ButtonDefaults.MinHeight
+            )
         ) {
             Text(
                 text = "Sign in",
