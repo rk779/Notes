@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.1.0-beta01"
 composeCompiler = "1.4.5"
-kotlin = "1.8.20"
+kotlin = "1.8.21"
 voyager = "1.0.0-rc04"
 
 # Application sdk version
