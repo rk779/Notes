@@ -13,6 +13,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.supabase.goTrue)
+
                 implementation(projects.core.base)
                 implementation(projects.core.data)
             }

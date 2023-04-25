@@ -23,6 +23,7 @@ kotlin {
                 implementation(projects.core.base)
                 implementation(projects.core.common)
                 implementation(projects.core.data)
+                implementation(projects.ui.design)
             }
         }
         val androidMain by getting

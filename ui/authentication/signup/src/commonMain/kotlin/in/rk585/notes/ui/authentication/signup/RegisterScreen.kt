@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -32,6 +33,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,7 +61,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import `in`.rk585.notes.core.base.utils.EMAIL_REGEX
 import `in`.rk585.notes.core.common.authentication.RegisterViewModel
+import `in`.rk585.notes.core.common.authentication.RegisterViewState
 import `in`.rk585.notes.core.common.viewModel
+import `in`.rk585.notes.ui.design.components.AutoSizedCircularProgressIndicator
 
 object RegisterScreen : Screen {
 
@@ -76,7 +81,16 @@ internal fun RegisterScreen(
     viewModel: RegisterViewModel
 ) {
     val navigator = LocalNavigator.currentOrThrow
+    val viewState by viewModel.state.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    viewState.uiMessage?.let { message ->
+        LaunchedEffect(message) {
+            snackBarHostState.showSnackbar(message.message)
+            // Notify the view model that the message has been dismissed
+            viewModel.clearMessage(message.id)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -88,6 +102,7 @@ internal fun RegisterScreen(
             contentAlignment = Alignment.Center
         ) {
             RegisterScreenContent(
+                viewState = viewState,
                 modifier = Modifier.fillMaxSize(),
                 onClickRegister = viewModel::registerWithEmail,
                 onClickSignIn = navigator::pop
@@ -99,8 +114,9 @@ internal fun RegisterScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun RegisterScreenContent(
+    viewState: RegisterViewState,
     modifier: Modifier = Modifier,
-    onClickRegister: (Pair<String, String>) -> Unit,
+    onClickRegister: (email: String, password: String) -> Unit,
     onClickSignIn: () -> Unit
 ) {
     val (email, onEmailChanged) = remember { mutableStateOf(TextFieldValue()) }
@@ -111,7 +127,7 @@ internal fun RegisterScreenContent(
             password.text == confirmPassword.text
         }
     }
-    val isInputValid by remember(email.text, password.text) {
+    val isInputValid by remember(email.text, password.text, confirmPassword.text, passwordMatches) {
         derivedStateOf {
             email.text.isNotEmpty() && email.text.matches(EMAIL_REGEX)
                     && password.text.isNotEmpty() && confirmPassword.text.isNotEmpty()
@@ -220,7 +236,7 @@ internal fun RegisterScreenContent(
                 onDone = {
                     if (!isInputValid) return@KeyboardActions
                     keyboardController?.hide()
-                    onClickRegister(Pair(email.text, password.text))
+                    onClickRegister(email.text, password.text)
                 }
             ),
             singleLine = true,
@@ -233,9 +249,9 @@ internal fun RegisterScreenContent(
             onClick = {
                 if (!isInputValid) return@Button
                 keyboardController?.hide()
-                onClickRegister(Pair(email.text, password.text))
+                onClickRegister(email.text, password.text)
             },
-            enabled = isInputValid,
+            enabled = isInputValid && !viewState.loading,
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.defaultMinSize(
                 TextFieldDefaults.MinWidth,
@@ -246,6 +262,13 @@ internal fun RegisterScreenContent(
                 text = "Register",
                 fontWeight = FontWeight.SemiBold
             )
+            AnimatedVisibility(viewState.loading) {
+                AutoSizedCircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .size(24.dp)
+                )
+            }
         }
         ElevatedButton(
             onClick = onClickSignIn,
