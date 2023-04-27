@@ -40,7 +40,13 @@ class RegisterViewModel(
                     email = email,
                     password = password
                 )
-            ).collectStatus(loadingState, uiMessageManager)
+            ).collectStatus(loadingState, uiMessageManager) {
+                launch {
+                    uiMessageManager.emitMessage(
+                        message = UiMessage("Check confirmation email to continue")
+                    )
+                }
+            }
         }
     }
 

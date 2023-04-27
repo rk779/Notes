@@ -17,6 +17,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(libs.supabase.goTrue)
+                api(libs.supabase.postgres)
 
                 implementation(projects.core.base)
             }

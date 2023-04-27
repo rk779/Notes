@@ -47,6 +47,7 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 
 # Networking
 supabase-goTrue = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabase" }
+supabase-postgres = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 
 # Navigation
 voyager-core = { module = "cafe.adriel.voyager:voyager-core", version.ref = "voyager" }
