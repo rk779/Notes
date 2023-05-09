@@ -21,7 +21,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun logout() {
-        client.invalidateSession()
+        client.logout()
     }
 
     override suspend fun registerWithEmail(credentials: Pair<String, String>): Email.Result? {
