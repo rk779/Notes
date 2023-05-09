@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.1.0-beta01"
+androidGradlePlugin = "8.1.0-beta02"
 composeCompiler = "1.4.5"
 coroutines = "1.7.0-RC"
 jetbrainsCompose = "1.4.0"
