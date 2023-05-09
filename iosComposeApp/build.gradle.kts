@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.native)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -29,7 +30,18 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
 
-                implementation(projects.ui.navigation)
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.transitions)
+
+                implementation(projects.core.base)
+                implementation(projects.core.common)
+                implementation(projects.core.data)
+                implementation(projects.core.domain)
+                implementation(projects.core.network)
+                implementation(projects.ui.authentication.login)
+                implementation(projects.ui.authentication.navigation)
+                implementation(projects.ui.design)
+                implementation(projects.ui.splash)
             }
         }
         val iosX64Main by getting
@@ -42,4 +54,10 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
         }
     }
+}
+
+dependencies {
+    add("kspIosX64", libs.kotlinInject.compiler)
+    add("kspIosArm64", libs.kotlinInject.compiler)
+    add("kspIosSimulatorArm64", libs.kotlinInject.compiler)
 }

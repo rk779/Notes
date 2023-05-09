@@ -3,6 +3,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -18,10 +19,17 @@ kotlin {
                 implementation(compose.material3)
 
                 implementation(libs.voyager.navigator)
+                implementation(libs.voyager.transitions)
 
-                implementation(projects.ui.design)
+                implementation(projects.core.base)
+                implementation(projects.core.common)
+                implementation(projects.core.data)
+                implementation(projects.core.domain)
+                implementation(projects.core.network)
                 implementation(projects.ui.authentication.login)
                 implementation(projects.ui.authentication.navigation)
+                implementation(projects.ui.design)
+                implementation(projects.ui.splash)
             }
         }
     }
@@ -38,4 +46,8 @@ compose {
             }
         }
     }
+}
+
+dependencies {
+    add("kspJvm", libs.kotlinInject.compiler)
 }

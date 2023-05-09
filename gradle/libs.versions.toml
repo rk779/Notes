@@ -1,7 +1,12 @@
 [versions]
-androidGradlePlugin = "8.1.0-beta01"
+androidGradlePlugin = "8.1.0-beta02"
 composeCompiler = "1.4.5"
+coroutines = "1.7.0-RC"
+jetbrainsCompose = "1.4.0"
 kotlin = "1.8.20"
+kotlinInject = "0.6.1"
+ktor = "2.3.0"
+supabase = "1.0.0-alpha-2"
 voyager = "1.0.0-rc06"
 
 # Application sdk version
@@ -12,13 +17,41 @@ minSdk = "23"
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-compose-multiplatform = { id = "org.jetbrains.compose", version = "1.4.0" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version = "3.1.0" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-native = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "1.8.20-1.0.11" }
 
 [libraries]
+# Jetbrains Compose Libraries
+compose-runtime-saveable = { module = "org.jetbrains.compose.runtime:runtime-saveable", version.ref = "jetbrainsCompose" }
+
+# Dependency Injection
+kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
+kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
+
+# Kotlinx Libraries
+kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version = "0.20.2" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.0" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
+
+# Ktor
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+
+# Networking
+supabase-goTrue = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabase" }
+supabase-postgres = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
+
+# Navigation
 voyager-core = { module = "cafe.adriel.voyager:voyager-core", version.ref = "voyager" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 
 [bundles]

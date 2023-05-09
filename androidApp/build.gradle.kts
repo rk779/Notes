@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -39,9 +40,19 @@ dependencies {
 
     implementation(compose.material3)
 
+    // Dependency Injection
+    ksp(libs.kotlinInject.compiler)
+
+    // Navigation
     implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
 
     implementation(projects.shared)
+    implementation(projects.core.base)
+    implementation(projects.core.common)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+    implementation(projects.core.network)
     implementation(projects.ui.authentication.login)
     implementation(projects.ui.authentication.navigation)
     implementation(projects.ui.design)
