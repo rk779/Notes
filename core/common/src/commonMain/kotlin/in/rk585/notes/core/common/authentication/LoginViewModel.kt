@@ -7,7 +7,7 @@ import `in`.rk585.notes.core.base.collectStatus
 import `in`.rk585.notes.core.base.utils.ObservableLoadingCounter
 import `in`.rk585.notes.core.base.utils.UiMessage
 import `in`.rk585.notes.core.base.utils.UiMessageManager
-import `in`.rk585.notes.core.domain.interactor.UserEmailLogin
+import `in`.rk585.notes.core.domain.interactor.LoginUserWithEmail
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -17,7 +17,7 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class LoginViewModel(
-    private val userEmailLogin: UserEmailLogin
+    private val loginUserWithEmail: LoginUserWithEmail
 ) : ScreenModel {
 
     private val loadingState = ObservableLoadingCounter()
@@ -35,7 +35,7 @@ class LoginViewModel(
 
     fun loginWithEmail(email: String, password: String) {
         coroutineScope.launch {
-            userEmailLogin.invoke(UserEmailLogin.Params(email, password))
+            loginUserWithEmail.invoke(LoginUserWithEmail.Params(email, password))
                 .collectStatus(loadingState, uiMessageManager)
         }
     }
