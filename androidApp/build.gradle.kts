@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transitions)
 
-    implementation(projects.shared)
     implementation(projects.core.base)
     implementation(projects.core.common)
     implementation(projects.core.data)
